@@ -1,7 +1,7 @@
 use std::io;
-use uint::construct_uint;
-//can calculate up to the 2951st fibonacci number. any larger an it takes too long to compile
-//any edits at all causes it to recompile. even comments.
+use ramp::Int;
+
+//can calculates the fibonacci number, up to memory limits. uses ramp on nightly to get really big values.
 fn main() {
     println!("Input Desired Fibonacci Number");
 
@@ -18,18 +18,16 @@ fn main() {
             0
         }
     };
-    let mut one: [u64; 32] = [0; 32];
-    one[0] = 1;
-    let mut array: [U1024; 2] = [U1024([0; 32]), U1024(one)]; //lowest bit first
+    let mut array: [Int; 2] = [Int::zero(), Int::one()];
     if fibnum == 0 || fibnum == 1 {
         println!("Fibnumber = {}", array[fibnum]);
     } else {
         let mut counter = 2;
-        let mut num: U1024 = U1024([0; 32]);
+        let mut num: Int = Int::zero();
         while counter <= fibnum {
-            num = array[0] + array[1];
-            array[0] = array[1];
-            array[1] = num;
+            num = array[0].clone() + array[1].clone();
+            array[0] = array[1].clone();
+            array[1] = num.clone();
             counter += 1;
         }
 
@@ -37,7 +35,3 @@ fn main() {
     }
 }
 
-// U1024 with 1024 bits consisting of 32 x 64-bit words
-construct_uint! {
-    pub struct U1024(32);
-}
